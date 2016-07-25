@@ -8,4 +8,4 @@ Mainly designed for use with two wire garage door openers.
 
 #To Run:
 1.Install node
-2.Get to the root directory of this project and type node omegagarage.js
+2.Get to the root directory of this project and type node omega_garageServer.js
