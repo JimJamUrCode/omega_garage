@@ -1,0 +1,14 @@
+{
+  "garageDoors": [
+    {
+      "relayPin": 6,
+      "garageName": "Main",
+      "sensorPin": 26
+    },
+    {
+      "relayPin": 7,
+      "garageName": "Secondary",
+      "sensorPin": 23
+    }
+  ]
+}

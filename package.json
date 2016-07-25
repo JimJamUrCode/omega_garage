@@ -1,0 +1,29 @@
+{
+  "name": "omega_garage",
+  "version": "0.1.0",
+  "description": "A wifi garage remote control for the onion omega.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JimJamUrCode/omega_garage.git"
+  },
+  "keywords": [
+    "onion",
+    "omega",
+    "GPIO"
+  ],
+  "devDependencies":{
+    "mocha": "^2.3.4",
+    "chai": "*",
+    "mock-fs": "*"
+  },
+  "author": "James Harding",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}
