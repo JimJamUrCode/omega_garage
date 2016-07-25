@@ -1,4 +1,4 @@
-# omega_mote
+# omega_garage
 
 A node js application that can control your garage door(s).
 
