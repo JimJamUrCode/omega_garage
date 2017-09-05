@@ -10,5 +10,9 @@
       "garageName": "Secondary",
       "sensorPin": 23
     }
-  ]
+  ],
+  "UserEmail": "YOUR_EMAIL",
+  "UserPassword": "YOUR_PASSWORD",
+  "RecipientEmail": "RECIPIENT_EMAIL",
+  "EmailHost": "SMTP_EMAIL_HOST"
 }

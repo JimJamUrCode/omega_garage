@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var omegaGarage = require('./omega_garage');
-var omegaGarageObj = new omegaGarage();
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -15,7 +14,7 @@ app.get('/', function (req, res) {
 
 app.get('/getGarageState/:doorIndex', function (req, res) {
   
-  var state = omegaGarageObj.getGarageState(req.params.doorIndex);
+  var state = omegaGarage.getGarageState(req.params.doorIndex);
   res.send(state);
 });
 
@@ -23,7 +22,7 @@ app.post('/garageDoorCommand/:doorIndex', function (req, res) {
   //req.params.doorIndex
   console.log("Received request to change the state of the garage door: " + req.params.doorIndex);
   
-  omegaGarageObj.changeGarageState(parseInt(req.params.doorIndex));
+  omegaGarage.changeGarageState(parseInt(req.params.doorIndex));
   
   res.setHeader('Cache-Control', 'no-cache');
   res.send("Done!");
@@ -31,13 +30,13 @@ app.post('/garageDoorCommand/:doorIndex', function (req, res) {
 
 app.listen(3000, function () {
   console.log('omega_garage listening on port 3000!');
-  omegaGarageObj.init();
+  omegaGarage.init();
 });
 
 process.on('SIGINT', function ()
 {
   console.log("Cleaning up pins...");
-  omegaGarageObj.closePins();
+  omegaGarage.closePins();
   
   process.exit();
 });

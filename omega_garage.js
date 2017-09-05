@@ -1,31 +1,36 @@
 var method = omegaGarage.prototype;
-// var customGPIO = require('./customGPIO');
 var GPIOHelper = require('./gpiohelper');
+var emailClient = require('./emailClient');
+
+relaysStates = [0, 0];
+config = {};
+garageDoorsLength = 0;
+myGPIO = new GPIOHelper();
 
 function omegaGarage() {
-  this.relaysStates = {};
-  this.relayNames = {};
-  this.config = {};
-  this.garageDoorsLength = 0;
-  this.myGPIO = new GPIOHelper();
+  
 }
 
 omegaGarage.prototype.init = function()
 {
   try
   {
-    this.loadConfigFile();
+    loadConfigFile();
     
-    this.garageDoorsLength = this.config.garageDoors.length;
+    garageDoorsLength = config.garageDoors.length;
     
-    for(var i = 0; i < this.garageDoorsLength; i++)
+    for(var i = 0; i < garageDoorsLength; i++)
     {
-      console.log("Creating relay for " + this.config.garageDoors[i].garageName + " garage on pin: " + this.config.garageDoors[i].relayPin);
-      this.myGPIO.setPinSync(this.config.garageDoors[i].relayPin, 0);
+      console.log("Creating relay for " + config.garageDoors[i].garageName + " garage on pin: " + config.garageDoors[i].relayPin);
+      myGPIO.setPinSync(config.garageDoors[i].relayPin, 0);
       
-      console.log("Creating sensor input for " + this.config.garageDoors[i].garageName + " garage on pin: " + this.config.garageDoors[i].sensorPin);
-      this.myGPIO.setPinSync(this.config.garageDoors[i].sensorPin);
+      console.log("Creating sensor input for " + config.garageDoors[i].garageName + " garage on pin: " + config.garageDoors[i].sensorPin);
+      myGPIO.setPinSync(config.garageDoors[i].sensorPin);
     }
+    
+    emailClient.init(config.UserEmail, config.UserPassword, config.RecipientEmail, config.EmailHost);
+    
+    setInterval(beginStateUpdates, 5000);
   }
   catch(e)
   {
@@ -37,14 +42,13 @@ omegaGarage.prototype.getGarageState = function(garageDoorIndex)
 {
   try
   {
-    var result = this.myGPIO.getPinSync(this.config.garageDoors[garageDoorIndex].sensorPin);
     var strResult = "";
-    if(result == 0)
+    if(relaysStates[garageDoorIndex] == 0)
       strResult = "OPEN";
     else
       strResult = "CLOSED";
     
-    console.log("The " + this.config.garageDoors[garageDoorIndex].garageName + " garage is " + strResult);
+    console.log("The " + config.garageDoors[garageDoorIndex].garageName + " garage is " + strResult);
     return strResult;
   }
   catch(e)
@@ -58,7 +62,7 @@ omegaGarage.prototype.changeGarageState = function(garageDoorIndex)
 {
   try
   {
-    console.log("Changing the state of the " + this.config.garageDoors[garageDoorIndex].garageName + " garage.");
+    console.log("Changing the state of the " + config.garageDoors[garageDoorIndex].garageName + " garage.");
     
     this.setRelayState(garageDoorIndex, 1);
     
@@ -66,7 +70,7 @@ omegaGarage.prototype.changeGarageState = function(garageDoorIndex)
     setTimeout(function()
     {
       obj.setRelayState(garageDoorIndex, 0);
-    }, 100);
+    }, 1000);
     
   }
   catch(e)
@@ -79,22 +83,28 @@ omegaGarage.prototype.closePins = function()
 {
   for(var i = 0; i < this.garageDoorsLength; i++)
   {
-    console.log("Closing relay pin: " + this.config.garageDoors[i].relayPin);
-    this.myGPIO.closepin(this.config.garageDoors[i].relayPin);
+    console.log("Closing relay pin: " + config.garageDoors[i].relayPin);
+    myGPIO.closepin(config.garageDoors[i].relayPin);
     
-    console.log("Closing sensor pin: " + this.config.garageDoors[i].sensorPin);
-    this.myGPIO.closepin(this.config.garageDoors[i].sensorPin);
+    console.log("Closing sensor pin: " + config.garageDoors[i].sensorPin);
+    myGPIO.closepin(config.garageDoors[i].sensorPin);
   }
 };
 
-omegaGarage.prototype.loadConfigFile = function()
+omegaGarage.prototype.setRelayState = function(garageDoorIndex, value)
+{
+  myGPIO.setPinSync(config.garageDoors[garageDoorIndex].relayPin, value);
+}
+
+////////////////////////////////PRIVATE FUNCTIONS///////////////////////////////
+function loadConfigFile()
 {
   try
   {
     console.log("Loading configuration file...");
     var home = process.env.HOME;
-    this.config = require(home + '/omega_garage/config.json');
-    console.log("Configuration file loaded...");
+    config = require('/tmp/omega_garage/config.json');
+    console.log("Configuration file loaded..." + JSON.stringify(config));
   }
   catch (e)
   {
@@ -103,9 +113,33 @@ omegaGarage.prototype.loadConfigFile = function()
   }
 };
 
-omegaGarage.prototype.setRelayState = function(garageDoorIndex, value)
+function beginStateUpdates()
 {
-  this.myGPIO.setPinSync(this.config.garageDoors[garageDoorIndex].relayPin, value);
+  updateGarageState(0);
+  updateGarageState(1);
 }
 
-module.exports = omegaGarage;
+function updateGarageState(garageDoorIndex)
+{
+  try
+  {
+    console.log("Updating garage door states");
+    
+    var result = myGPIO.getPinSync(config.garageDoors[garageDoorIndex].sensorPin);
+
+    if(result != relaysStates[garageDoorIndex])//If the state of the garage has changed, then notify the user.
+    {
+      var subject = config.garageDoors[garageDoorIndex].garageName + " changed state";
+      var message = "The " + config.garageDoors[garageDoorIndex].garageName + " garage has changed state...";
+    
+      emailClient.sendEmail(subject, message);
+    }
+    
+    relaysStates[garageDoorIndex] = result;    
+  }
+  catch(e)
+  {
+    console.log("Error getting garage state: " + e);
+  }
+}
+module.exports = new omegaGarage();
