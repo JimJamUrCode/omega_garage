@@ -103,7 +103,7 @@ function loadConfigFile()
   {
     console.log("Loading configuration file...");
     var home = process.env.HOME;
-    config = require(home + '/config.json');
+    config = require('/root/config.json');
     console.log("Configuration file loaded..." + JSON.stringify(config));
   }
   catch (e)
