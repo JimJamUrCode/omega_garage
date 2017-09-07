@@ -129,8 +129,14 @@ function updateGarageState(garageDoorIndex)
 
     if(result != relaysStates[garageDoorIndex])//If the state of the garage has changed, then notify the user.
     {
-      var subject = config.garageDoors[garageDoorIndex].garageName + " changed state";
-      var message = "The " + config.garageDoors[garageDoorIndex].garageName + " garage has changed state...";
+      var state = "";
+      if(result == 0)
+        state = " garage is now open";
+      else
+        state = " garage is now closed";
+      
+      var subject = config.garageDoors[garageDoorIndex].garageName + state;
+      var message = "The " + config.garageDoors[garageDoorIndex].garageName + state;
     
       emailClient.sendEmail(subject, message);
     }
