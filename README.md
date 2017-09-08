@@ -74,7 +74,7 @@ Mainly designed for use with two wire garage door openers. I have found that som
 
   ```chmod +x /etc/init.d/startOmegaGarage16mbplus```
 
-7.Enable the new init.d script to make the service run at boot. The startOmegaGarage script will load the omega_garage repo into RAM and start the server.
+7.Enable the new init.d script to make the service run at boot. The startOmegaGarage16mbplus script will start the server.
 
   ```/etc/init.d/startOmegaGarage16mbplus enable```
 
