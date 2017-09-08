@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+# Omega_Garage Boot Script Created by James Harding
+# https://github.com/JimJamUrCode for more...
+
+START=99
+STOP=1
+
+start() {        
+        echo start >> /tmp/output.txt
+	node /root/omega_garage/omega_garageServer.js 
+}                 
+
+stop() {          
+        echo stop
+        # commands to kill application 
+}
