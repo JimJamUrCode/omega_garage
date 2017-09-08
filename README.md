@@ -4,7 +4,7 @@ A node js application that can control your garage door(s).
 
 This app uses a configuration file to define pins, the name of the garage door that the pin corresponds with, and a sensor pin for the magnetic proximity sensor.
 
-Mainly designed for use with two wire garage door openers.
+Mainly designed for use with two wire garage door openers. I have found that some Chamberlain 2 wire systems do not work with just a relay. The systems have something called Security+ 2.0 which uses a serial wire protocol. I have yet had time to decrypt this so be aware this doesn't work with every 2 wire system.
 
 # To Install on Omegas with only 16mb of Flash storage:
 
