@@ -31,8 +31,8 @@ emailClient.prototype.sendEmail = function(subject, message)
   
   mServer.send({
      text:    message, 
-     from:    "<" + mUserEmail + ">", 
-     to:      "<" + mRecipientEmail + ">",
+     from:    mUserEmail, //In config file, should be something like "<myemail@email.com>"
+     to:      mRecipientEmail, //In config file should be something like "<myemail@email.com><youremail@email.com>"
      cc:      "",
      subject: subject
   }, function(err, message) { console.log(err || message); });
