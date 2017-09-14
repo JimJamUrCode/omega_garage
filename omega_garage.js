@@ -1,6 +1,7 @@
 var method = omegaGarage.prototype;
 var GPIOHelper = require('./gpiohelper');
 var emailClient = require('./emailClient');
+var temphum = require('./temphum');
 
 relaysStates = [0, 0];
 config = {};
