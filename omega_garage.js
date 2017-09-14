@@ -31,6 +31,7 @@ omegaGarage.prototype.init = function()
     
     emailClient.init(config.UserEmail, config.UserPassword, config.RecipientEmail, config.EmailHost);
     
+    temphum.init(config.TempSensorEnabled);
     setInterval(beginStateUpdates, 5000);
   }
   catch(e)

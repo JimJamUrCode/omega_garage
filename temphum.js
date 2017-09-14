@@ -3,6 +3,7 @@ var exec = require('child_process').exec;
 var mTemp;
 var mHum;
 var mTempInC;
+var mIsEnabled;
 
 function temphum()
 {
@@ -11,9 +12,7 @@ function temphum()
   mTemp = 0;
   mHum = 0;
   mTempInC = false;
-  
-  updateTempHum();
-  setInterval(updateTempHum, 30000);
+  mIsEnabled = false;
 }
 
 function updateTempHum()
@@ -58,7 +57,18 @@ function getTempUnits()
 }
 
 //////////////////////////////////PUBLIC FUNCTIONS///////////////////////////////////
-temphum.prototype.getTemp = function (command)
+temphum.prototype.init = function (enabled)
+{
+  mIsEnabled = enabled;
+  
+  if(mIsEnabled)
+  {
+    updateTempHum();
+    setInterval(updateTempHum, 30000);
+  }
+}
+
+temphum.prototype.getTemp = function ()
 {
   return getTemp();
 }
@@ -68,7 +78,7 @@ temphum.prototype.getTempUnits = function ()
   getTempUnits();
 }
 
-temphum.prototype.getHum = function (command)
+temphum.prototype.getHum = function ()
 {
   return mHum;
 }
