@@ -42,6 +42,11 @@ omegaGarage.prototype.init = function()
 
 omegaGarage.prototype.getGarageState = function(garageDoorIndex)
 {
+  
+}
+
+omegaGarage.prototype.getGarageState = function(garageDoorIndex)
+{
   try
   {
     var strResult = "";
@@ -98,6 +103,16 @@ omegaGarage.prototype.setRelayState = function(garageDoorIndex, value)
   myGPIO.setPinSync(config.garageDoors[garageDoorIndex].relayPin, value);
 }
 
+omegaGarage.prototype.getAllGarageStates = function()
+{
+  var obj = [];
+  
+  for(var i = 0; i < garageDoorsLength; i++)
+    obj.push(relaysStates[i]);
+  
+  return obj;
+}
+
 ////////////////////////////////PRIVATE FUNCTIONS///////////////////////////////
 function loadConfigFile()
 {
@@ -117,8 +132,10 @@ function loadConfigFile()
 
 function beginStateUpdates()
 {
-  updateGarageState(0);
-  updateGarageState(1);
+  for(var i = 0; i < garageDoorsLength; i++)
+  {
+    updateGarageState(i);
+  }
 }
 
 function updateGarageState(garageDoorIndex)

@@ -25,7 +25,7 @@ function getTempHumCallback(error, stdout, stderr)
   if(error)
     console.log("Error getting temperature and humidity: " + JSON.stringify(error));
   else if(stderr)
-    console.log("Error getting temperature and humidity: " + JSON.stringify(stderr));
+    console.log("Std Error getting temperature and humidity: " + JSON.stringify(stderr));
   else
   {
     var values = stdout.split("\n");
@@ -34,7 +34,7 @@ function getTempHumCallback(error, stdout, stderr)
     mHum = values[1];
     
     console.log("Garage Temperature is: " + getTemp() + " " + getTempUnits());
-    console.log("Garage Humidity is: " + mHum);
+    console.log("Garage Humidity is: " + mHum + " %RH");
   }
 }
 
@@ -63,22 +63,22 @@ temphum.prototype.init = function (enabled)
   
   if(mIsEnabled)
   {
+    setInterval(updateTempHum, 600000);
     updateTempHum();
-    setInterval(updateTempHum, 30000);
   }
 }
 
-temphum.prototype.getTemp = function ()
+temphum.prototype.getTemperature = function ()
 {
   return getTemp();
 }
 
 temphum.prototype.getTempUnits = function ()
 {
-  getTempUnits();
+  return getTempUnits();
 }
 
-temphum.prototype.getHum = function ()
+temphum.prototype.getHumidity = function ()
 {
   return mHum;
 }

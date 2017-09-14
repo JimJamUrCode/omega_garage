@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var omegaGarage = require('./omega_garage');
+var temphum = require('./temphum');
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -26,6 +27,38 @@ app.post('/garageDoorCommand/:doorIndex', function (req, res) {
   
   res.setHeader('Cache-Control', 'no-cache');
   res.send("Done!");
+});
+
+app.get('/getTemperature', function (req, res) 
+{
+  var obj = {
+    temp: temphum.getTemperature() + " " + temphum.getTempUnits(),
+  }
+  
+  console.log("Responding to a request for the temperature..." + obj.temp);
+  res.json(obj);
+});
+
+app.get('/getHumidity', function (req, res)
+{  
+  var obj = {
+    hum: temphum.getHumidity() + " %RH",
+  }
+  
+  console.log("Responding to a request for the temperature..." + obj.hum);
+  res.json(obj);
+});
+
+app.get('/getAllDetails', function (req, res)
+{  
+  var obj = {
+    temp: temphum.getTemperature() + " " + temphum.getTempUnits(),
+    hum: temphum.getHumidity() + " %RH",
+    garageStates: omegaGarage.getAllGarageStates()
+  }
+  
+  console.log("Responding to a request for all the details..." + JSON.stringify(obj));
+  res.json(obj);
 });
 
 app.listen(3000, function () {
