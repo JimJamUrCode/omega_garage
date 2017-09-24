@@ -30,8 +30,8 @@ function getTempHumCallback(error, stdout, stderr)
   {
     var values = stdout.split("\n");
     
-    mTemp = values[0];
-    mHum = values[1];
+    mTemp = values[1];
+    mHum = values[0];
     
     console.log("Garage Temperature is: " + getTemp() + " " + getTempUnits());
     console.log("Garage Humidity is: " + mHum + " %RH");
