@@ -52,8 +52,8 @@ app.get('/getHumidity', function (req, res)
 app.get('/getAllDetails', function (req, res)
 {  
   var obj = {
-    temp: temphum.getTemperature() + " " + temphum.getTempUnits(),
-    hum: temphum.getHumidity() + " %RH",
+    temp: parseInt(temphum.getTemperature()),
+    hum: parseInt(temphum.getHumidity()),
     garageStates: omegaGarage.getAllGarageStates()
   }
   
