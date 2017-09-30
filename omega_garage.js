@@ -2,6 +2,7 @@ var method = omegaGarage.prototype;
 var GPIOHelper = require('./gpiohelper');
 var emailClient = require('./emailClient');
 var temphum = require('./temphum');
+var camera = require('./camera');
 
 relaysStates = [0, 0];
 config = {};
@@ -32,6 +33,7 @@ omegaGarage.prototype.init = function()
     emailClient.init(config.UserEmail, config.UserPassword, config.RecipientEmail, config.EmailHost);
     
     temphum.init(config.TempSensorEnabled);
+    camera.init(config.CameraEnabled);
     setInterval(beginStateUpdates, 5000);
   }
   catch(e)
@@ -39,11 +41,6 @@ omegaGarage.prototype.init = function()
     console.log("Error initializing: " + e);
   }
 };
-
-omegaGarage.prototype.getGarageState = function(garageDoorIndex)
-{
-  
-}
 
 omegaGarage.prototype.getGarageState = function(garageDoorIndex)
 {
@@ -154,10 +151,18 @@ function updateGarageState(garageDoorIndex)
       else
         state = " garage is now closed";
       
-      var subject = config.garageDoors[garageDoorIndex].garageName + state;
-      var message = "The " + config.garageDoors[garageDoorIndex].garageName + state;
-    
-      emailClient.sendEmail(subject, message);
+      camera.takePicture(doneTakingPicture);
+      
+      function doneTakingPicture(didCapture)
+      {
+        var subject = config.garageDoors[garageDoorIndex].garageName + state;
+        var message = "The " + config.garageDoors[garageDoorIndex].garageName + state;
+        
+        if(didCapture)
+          emailClient.sendEmail(subject, message, "/root/garageImage.jpg");
+        else
+          emailClient.sendEmail(subject, message, null);
+      }
     }
     
     relaysStates[garageDoorIndex] = result;    

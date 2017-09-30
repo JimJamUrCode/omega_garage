@@ -9,7 +9,8 @@ start() {
         echo start >> /tmp/output.txt
 	git clone --progress https://github.com/JimJamUrCode/omega_garage.git /tmp/omega_garage 2> /root/gitoutput.log
 	chmod +x /tmp/omega_garage/checkHumidity/bin/checkHumidity
-  node /tmp/omega_garage/omega_garageServer.js 
+	chmod +x /tmp/omega_garage/takePicture.sh
+	node /tmp/omega_garage/omega_garageServer.js 
 }                 
 
 stop() {          

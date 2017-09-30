@@ -15,5 +15,6 @@
   "UserPassword": "YOUR_PASSWORD",
   "RecipientEmail": "RECIPIENT_EMAIL",
   "EmailHost": "SMTP_EMAIL_HOST",
-  "TempSensorEnabled": false
+  "TempSensorEnabled": false,
+  "CameraEnabled": false
 }

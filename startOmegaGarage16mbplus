@@ -8,6 +8,7 @@ STOP=1
 start() {        
         echo start >> /tmp/output.txt
         chmod +x /root/omega_garage/checkHumidity/bin/checkHumidity
+        chmod +x /root/omega_garage/takePicture.sh
 	node /root/omega_garage/omega_garageServer.js 
 }                 
 

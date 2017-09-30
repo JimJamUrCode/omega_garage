@@ -25,17 +25,35 @@ emailClient.prototype.init = function(userEmail, password, recipientEmail, host)
   );
 }
  
-emailClient.prototype.sendEmail = function(subject, message)
+emailClient.prototype.sendEmail = function(subject, message, imgFilePath)
 {
   console.log("Sending email from: " + mUserEmail + " to " + mRecipientEmail);
   
-  mServer.send({
+  if(imgFilePath)
+  {
+    mServer.send({
      text:    message, 
      from:    "<" + mUserEmail + ">", //In config file, should be something like "myemail@email.com"
      to:      mRecipientEmail, //In config file should be something like "<myemail@email.com><youremail@email.com>"
      cc:      "",
-     subject: subject
-  }, function(err, message) { console.log(err || message); });
+     subject: subject,
+     attachment: 
+      [
+      {data:"<html></html>", alternative:true},
+      {path:imgFilePath, type:"image/jpeg", name:"img.jpg"}
+      ]
+    }, function(err, message) { console.log(err || message); });
+  }
+  else
+  {
+    mServer.send({
+       text:    message, 
+       from:    "<" + mUserEmail + ">", //In config file, should be something like "myemail@email.com"
+       to:      mRecipientEmail, //In config file should be something like "<myemail@email.com><youremail@email.com>"
+       cc:      "",
+       subject: subject
+    }, function(err, message) { console.log(err || message); });
+  } 
 }
 
 module.exports = new emailClient();
