@@ -16,5 +16,6 @@
   "RecipientEmail": "RECIPIENT_EMAIL",
   "EmailHost": "SMTP_EMAIL_HOST",
   "TempSensorEnabled": false,
+  "TempSensorOffset": 0,
   "CameraEnabled": false
 }

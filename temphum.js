@@ -4,6 +4,7 @@ var mTemp;
 var mHum;
 var mTempInC;
 var mIsEnabled;
+var mOffset;
 
 function temphum()
 {
@@ -30,7 +31,7 @@ function getTempHumCallback(error, stdout, stderr)
   {
     var values = stdout.split("\n");
     
-    mTemp = values[1];
+    mTemp = parseFloat(values[1]) + mOffset;
     mHum = values[0];
     
     console.log("Garage Temperature is: " + getTemp() + " " + getTempUnits());
@@ -57,9 +58,11 @@ function getTempUnits()
 }
 
 //////////////////////////////////PUBLIC FUNCTIONS///////////////////////////////////
-temphum.prototype.init = function (enabled)
+temphum.prototype.init = function (enabled, offset)
 {
   mIsEnabled = enabled;
+  mOffset = parseFloat(offset);
+  console.log(mOffset);
   
   if(mIsEnabled)
   {

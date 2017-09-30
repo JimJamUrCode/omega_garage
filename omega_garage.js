@@ -32,7 +32,7 @@ omegaGarage.prototype.init = function()
     
     emailClient.init(config.UserEmail, config.UserPassword, config.RecipientEmail, config.EmailHost);
     
-    temphum.init(config.TempSensorEnabled);
+    temphum.init(config.TempSensorEnabled, config.TempSensorOffset);
     camera.init(config.CameraEnabled);
     setInterval(beginStateUpdates, 5000);
   }
