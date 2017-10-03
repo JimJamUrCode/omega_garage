@@ -32,7 +32,7 @@ function getTempHumCallback(error, stdout, stderr)
     var values = stdout.split("\n");
     
     mTemp = parseFloat(values[1]) + mOffset;
-    mHum = values[0];
+    mHum = parseFloat(values[0]);
     
     console.log("Garage Temperature is: " + getTemp() + " " + getTempUnits());
     console.log("Garage Humidity is: " + mHum + " %RH");
@@ -74,6 +74,11 @@ temphum.prototype.init = function (enabled, offset)
 temphum.prototype.getTemperature = function ()
 {
   return getTemp();
+}
+
+temphum.prototype.getTemperatureInC = function ()
+{
+  return mTemp;
 }
 
 temphum.prototype.getTempUnits = function ()

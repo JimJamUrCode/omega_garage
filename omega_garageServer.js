@@ -61,6 +61,17 @@ app.get('/getAllDetails', function (req, res)
   res.json(obj);
 });
 
+app.get('/getWeatherDetails', function (req, res)
+{  
+  var obj = {
+    temperature: parseInt(temphum.getTemperatureInC()),
+    humidity: parseInt(temphum.getHumidity())
+  }
+  
+  console.log("Responding to a request for the weather details..." + JSON.stringify(obj));
+  res.json(obj);
+});
+
 app.listen(3000, function () {
   console.log('omega_garage listening on port 3000!');
   omegaGarage.init();
