@@ -91,3 +91,18 @@ Mainly designed for use with two wire garage door openers. I have found that som
  * emailjs and its dependencies
 
  * You must get a copy of express for node. Follow the instructions in the guide here: https://community.onion.io/topic/855/nodejs-express-http-server/2. I have included a version in the repo that is working for me.
+ 
+# HomeBridge Compatibility
+* I have added homebridge compatibility by using this homebridge plugin:https://www.npmjs.com/package/homebridge-advanced-http-temperature-humidity
+  * The "accessories" section of your homebridge config file would look something like this: 
+  
+  "accessories": [
+      {
+        "accessory": "AdvancedHttpTemperatureHumidity",
+        "name": "Temperature and Humidity",
+        "url": "http://192.168.1.45:3000/getWeatherDetails",
+        "disableHumidity": false,
+        "http_method": "GET"
+      }
+    ],
+    
